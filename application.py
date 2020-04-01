@@ -34,7 +34,7 @@ def requestStock():
     current = "Current price: " + str(data['c'])
     high = "High of the day: " + str(data['h'])
     low = "Low of the day: " + str(data['l'])
-    opening = "Oppening price of the day: " + str(data['o'])
+    opening = "Opening price of the day: " + str(data['o'])
     previous = "Previous close price: " + str(data['pc'])
     timestamp = "Timestamp: " + str(data['t'])
 
