@@ -19,7 +19,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="/stockpicker">Stock Picker</a>
+              <a class="nav-link" href="/stockcheck">Stock Price Check</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/covid">COVID-19 Tracking</a>
@@ -40,7 +40,7 @@
                 <form method="POST" action="/requestStock" class="form-inline">
                     <div class="form-group mx-sm-3 mb-2">
                         <label for="input" class="sr-only">Stock Picker</label>
-                        <input type="text" class="form-control" id="input" name="picker" placeholder="Stock Picker" required onkeyup="this.value = this.value.toUpperCase();">
+                        <input type="text" class="form-control" id="input" name="picker" placeholder="Ticker" required onkeyup="this.value = this.value.toUpperCase();">
                     </div>
                     <button type="submit" class="btn btn-primary mb-2">Check!</button>
                 </form>

@@ -1,4 +1,5 @@
 import requests
+import json
 from flask import Flask, render_template, request
 
 app=Flask(__name__)
@@ -9,9 +10,9 @@ app=Flask(__name__)
 def home():
     return render_template('home.html')
 
-@app.route("/stockpicker")
+@app.route("/stockcheck")
 def picker():
-    return render_template('stockpicker.html', title="Stock Picker")
+    return render_template('stockcheck.html', title="Stock Price Checker")
 
 @app.route("/covid")
 def covid():
@@ -21,8 +22,8 @@ def covid():
 def getCOVIDData():
 
     response = requests.get('https://finnhub.io/api/v1/covid19/us?token=bpkgs0vrh5rcgrlra5v0')
-
     data = response.json()
+
     return render_template('covid_tracking.html', title="COVID-19 Tracking", results=data)
 
 
@@ -33,17 +34,18 @@ def requestStock():
 
     url = "https://finnhub-realtime-stock-price.p.rapidapi.com/quote"
 
-    querystring = {"symbol":picker}
+    queryString = {"symbol":picker}
 
     headers = {
         'x-rapidapi-host': "finnhub-realtime-stock-price.p.rapidapi.com",
         'x-rapidapi-key': "513b4d165fmsh4c349204d03662dp1d7b72jsn7bad13d69a6f"
         }
 
-    response = requests.request("GET", url, headers=headers, params=querystring)
+    response = requests.request("GET", url, headers=headers, params=queryString)
     data = response.json()
 
     results = []
+    ticker = "Ticker: " + picker
     current = "Current price: " + str(data['c'])
     high = "High of the day: " + str(data['h'])
     low = "Low of the day: " + str(data['l'])
@@ -51,6 +53,7 @@ def requestStock():
     previous = "Previous close price: " + str(data['pc'])
     timestamp = "Timestamp: " + str(data['t'])
 
+    results.append(ticker)
     results.append(current)
     results.append(high)
     results.append(low)
