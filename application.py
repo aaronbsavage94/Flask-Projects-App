@@ -30,7 +30,7 @@ def getCOVIDData():
 @app.route('/requestStock', methods=['POST'])
 def requestStock():
 
-    picker = request.form["picker"]
+    picker = request.form["ticker"]
 
     url = "https://finnhub-realtime-stock-price.p.rapidapi.com/quote"
 
@@ -61,7 +61,7 @@ def requestStock():
     results.append(previous)
     results.append(timestamp)
 
-    return render_template('stockpicker.html', title="Stock Picker", results=results)
+    return render_template('stockcheck.html', title="Stock Price Checker", results=results)
 
 if __name__ == '__main__':
     app.run(debug=True)
