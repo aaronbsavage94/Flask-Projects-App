@@ -3,11 +3,11 @@
 <h1>Python/Flask Web App for Projects</h1>
 
 <h3>To run:</h3>
-<ul>
-  <li>Download full directory</li>
-  <li>Run application.py</li>
-  <li>Browse to: http://127.0.0.1:5000/</li>
-</ul>
+  <ul>
+    <li>Download full directory</li>
+    <li>Run application.py</li>
+    <li>Browse to: http://127.0.0.1:5000/</li>
+  </ul>
 
 <h3>If you want to manually activate the virtual environment:</h3>
   <ul>
