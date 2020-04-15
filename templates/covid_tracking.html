@@ -7,6 +7,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">   
+
+    
     </head>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -27,12 +29,29 @@
     </nav>
 
     <body class="bg-dark text-white">
-        <div class="jumbotron jumbotron-fluid bg-info text-dark">
-            <div class="container">
-              <h1 class="display-4">Home Page</h1>
-              <p class="lead">This is my projects site, built on the <a class="text-dark" href="https://flask.palletsprojects.com/en/1.1.x/">Flask Framework</a></p>
+        <div class="container">
+            <br><br>
+            <div class="row">
+            <h1>COVID-19 Tracking</h1>
             </div>
-          </div>
 
-        </body>
+            <br>
+            <div class="row">
+                <form method="POST" action="/trackCOVID" class="form-inline">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <label for="input" class="sr-only">COVID-19 Tracking</label>
+                        <button type="submit" class="btn btn-primary mb-2">Check</button>
+                    </div>
+                </form>
+            </div>
+            <textarea class="form-control" id="result" rows="15" readonly>
+                {% for result in results %}
+                {{ result }}
+                {% endfor %}
+            </textarea>
+            <br>
+            <h6>Using finnhub's <a href="https://finnhub.io/docs/api" target="_blank">api</a></h6>
+        </div>
+
+    </body>
 </html>

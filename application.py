@@ -13,6 +13,19 @@ def home():
 def picker():
     return render_template('stockpicker.html', title="Stock Picker")
 
+@app.route("/covid")
+def covid():
+    return render_template('covid_tracking.html', title="COVID-19 Tracking")
+
+@app.route('/trackCOVID', methods=['POST'])
+def getCOVIDData():
+
+    response = requests.get('https://finnhub.io/api/v1/covid19/us?token=bpkgs0vrh5rcgrlra5v0')
+
+    data = response.json()
+    return render_template('covid_tracking.html', title="COVID-19 Tracking", results=data)
+
+
 @app.route('/requestStock', methods=['POST'])
 def requestStock():
 
