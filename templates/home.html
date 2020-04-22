@@ -33,6 +33,16 @@
               <p class="lead">This is my projects site, built on the <a class="text-dark" href="https://flask.palletsprojects.com/en/1.1.x/">Flask Framework</a></p>
             </div>
           </div>
-
+          <div class="container">
+            <form method="POST" action="/quote">
+              <button type="submit" class="btn btn-primary mb-2">Let's get a random quote.</button><br>
+              <textarea id="quote" class="form-control" rows="10" readonly>
+                {% for result in results %}
+                {{ result }}
+                {% endfor %}
+              </textarea>
+              <h6>Thanks <a href="https://rapidapi.com/martin.svoboda/api/quotes15/details" target="_blank">Quotes API</a></h6>
+            </form>
+          </div>
         </body>
 </html>
