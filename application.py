@@ -52,7 +52,7 @@ def getQuote():
 @app.route('/trackCOVID', methods=['POST'])
 def getCOVIDData():
     results = []
-
+    
     try:
         response = requests.get('https://finnhub.io/api/v1/covid19/us?token=bpkgs0vrh5rcgrlra5v0')
         data = response.json()
@@ -62,7 +62,11 @@ def getCOVIDData():
             return render_template('covid_tracking.html', title="COVID-19 Tracking", results=results)
 
         else:
-            return render_template('covid_tracking.html', title="COVID-19 Tracking", results=data)
+
+            for d in data:
+                results.append((json.dumps(d, ensure_ascii=False)).encode("utf8"))
+
+            return render_template('covid_tracking.html', title="COVID-19 Tracking", results=results)
 
     
     except:
