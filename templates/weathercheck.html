@@ -34,28 +34,22 @@
     <body class="bg-dark text-white">
         <div class="container">
             <br><br>
-            <div class="row">
-            <h1>Check the Weather</h1>
-            </div>
-
-            <br>
-            <div class="row">
-                <form method="POST" action="/checkWeather" class="form-inline">
-                    <div class="form-group mx-sm-3 mb-2">
-                        <label for="input" class="sr-only">Stock Price Check</label>
-                        <input type="text" class="form-control" id="input" name="zip" placeholder="Zip Code" maxlength="5" required >
-                    </div>
-                    <button type="submit" class="btn btn-primary mb-2">Check!</button>
-                </form>
-            </div>
+            <h1>Check the Weather</h1><br>
+                
+            <form method="POST" action="/checkWeather" class="form-inline">
+              <div class="form-group mx-sm-3 mb-2">
+                <label for="input" class="sr-only">Stock Price Check</label>
+                <input type="text" class="form-control" id="input" name="zip" placeholder="Zip Code" maxlength="5" required >
+              </div>
+              <button type="submit" class="btn btn-primary mb-2">Check!</button>
+            </form><br>
+            
             <textarea class="form-control" id="result" rows="5" readonly>
                 {% for result in results %}
                 {{ result }}
                 {% endfor %}
-            </textarea>
-            <br>
+            </textarea><br>
             <h6>Using OpenWeather's <a href="http://api.openweathermap.org" target="_blank">API</a></h6>
         </div>
-
     </body>
 </html>

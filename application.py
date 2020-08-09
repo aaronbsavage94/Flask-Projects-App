@@ -39,11 +39,13 @@ def getQuote():
 
         querystring = {"language_code":"en"}
 
+        #Request headers
         headers = {
             'x-rapidapi-host': "quotes15.p.rapidapi.com",
             'x-rapidapi-key': "513b4d165fmsh4c349204d03662dp1d7b72jsn7bad13d69a6f"
             }
 
+        #Send and get response
         response = requests.request("GET", url, headers=headers, params=querystring, timeout=1)
         data = response.json()
 
@@ -83,10 +85,17 @@ def getCOVIDData():
         #Else, change encoding of each object in JSON response for Linux host and redirect to form
         else:
 
+            #For each object in the reply        
             for d in data:
-                
+
                 #Change string encoding
-                results.append((json.dumps(d, ensure_ascii=False)).encode("utf8"))
+                d = (json.dumps(d, ensure_ascii=False)).encode("utf8")
+
+                #Trim first and last characters to remove JSON brackets
+                d = d[1:-1]
+
+                #Append to results
+                results.append(d)
 
             #Direct output to form
             return render_template('covid_tracking.html', title="COVID-19 Tracking", results=results)
@@ -146,7 +155,7 @@ def requestStock():
 
     #Catch errors and return error message
     except:
-        results.append("Error encountered, please try again later.")
+        results.append("Error encountered, please double check your ticker or try again later.")
         return render_template('stockcheck.html', title="Stock Price Checker", results=results)
 
 #HTTP POST for weather check
@@ -191,7 +200,7 @@ def checkWeather():
         feels_like = ((feels_like_orig - 273.15)*(9.0/5.0)) + 32
 
         #Append output to results var
-        results.append("Weather for " + name + " " + zip + ", is: " + str(weather_desc) + " with a temperature of: " + str(round(temp, 2)) + " F, but it feels like: " + str(round(feels_like, 2)) + " F.")
+        results.append("Weather for " + name + ", " + zip + ", is: " + str(weather_desc) + " with a temperature of: " + str(round(temp, 2)) + " F, but it feels like: " + str(round(feels_like, 2)) + " F.")
 
         #Direct response to form
         return render_template('weathercheck.html', title="Check the Weather", results=results)

@@ -34,20 +34,14 @@
     <body class="bg-dark text-white">
         <div class="container">
             <br><br>
-            <div class="row">
-            <h1>Stock Price Checker</h1>
-            </div>
-
-            <br>
-            <div class="row">
+            <h1>Stock Price Checker</h1><br>
                 <form method="POST" action="/requestStock" class="form-inline">
                     <div class="form-group mx-sm-3 mb-2">
                         <label for="input" class="sr-only">Stock Price Check</label>
-                        <input type="text" class="form-control" id="input" name="ticker" placeholder="Ticker" required onkeyup="this.value = this.value.toUpperCase();">
+                        <input type="text" class="form-control" id="input" name="ticker" placeholder="Ticker" maxlength="6" required onkeyup="this.value = this.value.toUpperCase();">
                     </div>
                     <button type="submit" class="btn btn-primary mb-2">Check!</button>
-                </form>
-            </div>
+                </form><br>
             <textarea class="form-control" id="result" rows="15" readonly>
                 {% for result in results %}
                 {{ result }}
@@ -56,6 +50,5 @@
             <br>
             <h6>Using finnhub's <a href="https://finnhub.io/docs/api" target="_blank">API</a></h6>
         </div>
-
     </body>
 </html>
