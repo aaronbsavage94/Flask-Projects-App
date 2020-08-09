@@ -46,11 +46,11 @@ def getQuote():
             }
 
         #Send and get response
-        response = requests.request("GET", url, headers=headers, params=querystring, timeout=1)
+        response = requests.request("GET", url, headers=headers, params=querystring)
         data = response.json()
 
         #Parse JSON output
-        quote = str(data['content'] + "\n")
+        quote = str(data['content'] + "<br>")
         originator = data['originator']
         author = "--" + str(originator['name'])
         
@@ -85,6 +85,9 @@ def getCOVIDData():
         #Else, change encoding of each object in JSON response for Linux host and redirect to form
         else:
 
+            #Append HTML for textarea         
+            results.append('<textarea class="form-control" id="result" rows="15" readonly>')
+
             #For each object in the reply        
             for d in data:
 
@@ -97,6 +100,9 @@ def getCOVIDData():
                 #Append to results
                 results.append(d)
 
+            #Append HTML for textarea
+            results.append('</textarea><br>')
+            
             #Direct output to form
             return render_template('covid_tracking.html', title="COVID-19 Tracking", results=results)
 
@@ -111,44 +117,52 @@ def requestStock():
 
     #Initialize variables
     picker = request.form["ticker"]
-    results = []
+    results = ""
 
     #Try POST
     try:
 
-        #Endpoint
-        url = "https://finnhub-realtime-stock-price.p.rapidapi.com/quote"
-
-        #Query using picker from HTML form
+        #Form query from HTML form
         queryString = {"symbol":picker}
 
-        #Request headers
+        #Endpoints
+        url = "https://finnhub-realtime-stock-price.p.rapidapi.com/quote"
+        url1 = "https://finnhub.io/api/v1/stock/profile2?symbol="+picker+"&token=bpkgs0vrh5rcgrlra5v0"
+
+        #Request header for first request
         headers = {
             'x-rapidapi-host': "finnhub-realtime-stock-price.p.rapidapi.com",
             'x-rapidapi-key': "513b4d165fmsh4c349204d03662dp1d7b72jsn7bad13d69a6f"
             }
 
-        #Response
+        #Responses
         response = requests.request("GET", url, headers=headers, params=queryString)
         data = response.json()
+        
+        response1 =  requests.get(url1)
+        data1 = response1.json()
 
-        #Parse response
-        ticker = "Ticker: " + picker
-        current = "Current price: " + str(data['c'])
-        high = "High of the day: " + str(data['h'])
-        low = "Low of the day: " + str(data['l'])
-        opening = "Opening price of the day: " + str(data['o'])
-        previous = "Previous close price: " + str(data['pc'])
+        #Parse responses
+        company_string = str(data1["name"]) + " - " + str(data1["exchange"]) + '<br/>'
+        ticker = "Ticker: " + picker + '<br/>'
+        currency = "Currency: " + str(data1["currency"]) + '<br/>'
+        current = "Current price: " + str(data['c']) + '<br/>'
+        high = "High of the day: " + str(data['h']) + '<br/>'
+        low = "Low of the day: " + str(data['l']) + '<br/>'
+        opening = "Opening price of the day: " + str(data['o']) + '<br/>'
+        previous = "Previous close price: " + str(data['pc']) + '<br/>'
         timestamp = "Timestamp: " + str(data['t'])
 
         #Append to results var
-        results.append(ticker)
-        results.append(current)
-        results.append(high)
-        results.append(low)
-        results.append(opening)
-        results.append(previous)
-        results.append(timestamp)
+        results += company_string
+        results += ticker 
+        results += currency
+        results += current
+        results += high
+        results += low
+        results += opening
+        results += previous
+        results += timestamp
 
         #Direct parsed response to form
         return render_template('stockcheck.html', title="Stock Price Checker", results=results)

@@ -12,12 +12,14 @@
                     </div>
                     <button type="submit" class="btn btn-primary mb-2">Check!</button>
                 </form><br>
-            <textarea class="form-control" id="result" rows="15" readonly>
-                {% for result in results %}
-                {{ result }}
-                {% endfor %}
-            </textarea>
-            <br>
+
+                <p>
+                    {% autoescape false %}
+                        {{ results }}
+                    {% endautoescape %}
+                </p>
+
+            <br><br>
             <h6>Using finnhub's <a href="https://finnhub.io/docs/api" target="_blank">API</a></h6>
         </div>
     </body>

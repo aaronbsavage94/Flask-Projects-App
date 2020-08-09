@@ -10,12 +10,16 @@
           </div>
           <div class="container">
             <form method="POST" action="/quote">
-              <button type="submit" class="btn btn-primary mb-2">Let's get a random quote.</button><br>
-              <textarea id="quote" class="form-control" rows="10" readonly>
-                {% for result in results %}
-                {{ result }}
-                {% endfor %}
-              </textarea><br>
+              <button type="submit" class="btn btn-primary mb-2">Let's get a random quote.</button><br><br>
+              <p>
+                {% autoescape false %}
+                  {% for result in results %}
+                    {{ result }}
+                  {% endfor %}
+                {% endautoescape %}
+              </p>
+
+              <br>
               <h6>Thanks <a href="https://rapidapi.com/martin.svoboda/api/quotes15/details" target="_blank">Quotes API</a></h6>
             </form>
           </div>

@@ -11,11 +11,13 @@
                         <button type="submit" class="btn btn-primary mb-2">Check</button>
                     </div>
                 </form><br>
-            <textarea class="form-control" id="result" rows="15" readonly>
-                {% for result in results %}
-                {{ result }}
-                {% endfor %}
-            </textarea><br>
+
+                {% autoescape false %}
+                    {% for result in results %}
+                        {{ result }}
+                    {% endfor %}
+                {% endautoescape %}
+
             <h6>Using finnhub's <a href="https://finnhub.io/docs/api" target="_blank">API</a></h6>
             <h6>Please excuse the crude JSON output.</h6>
         </div>

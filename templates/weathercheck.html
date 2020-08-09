@@ -13,12 +13,14 @@
               </div>
               <button type="submit" class="btn btn-primary mb-2">Check!</button>
             </form><br>
-            
-            <textarea class="form-control" id="result" rows="5" readonly>
+
+              <h6>
                 {% for result in results %}
-                {{ result }}
+                  {{ result }}
                 {% endfor %}
-            </textarea><br>
+            </h6>
+
+            <br><br>
             <h6>Using OpenWeather's <a href="http://api.openweathermap.org" target="_blank">API</a></h6>
         </div>
     </body>
