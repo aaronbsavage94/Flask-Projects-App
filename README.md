@@ -1,6 +1,6 @@
 # Flask-Projects-App
 
-<h1>Python/Flask Web App for Projects</h1>
+<h1>Python3/Flask Web App for Projects</h1>
 
 <h3>To run locally:</h3>
   <ul>
