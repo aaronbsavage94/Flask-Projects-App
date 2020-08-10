@@ -26,44 +26,6 @@ def weather():
 def covid():
     return render_template('covid_tracking.html', title="COVID-19 Tracking")
 
-#HTTP POST for random quote on home page
-@app.route('/quote', methods=['POST'])
-def getQuote():
-    results = []
-
-    #Try POST
-    try:
-        
-        #Query string
-        querystring = {"token":"ipworld.info"}
-
-        #Endpoint
-        url = "https://quoteai.p.rapidapi.com/ai-quotes/0"
-
-        #Request headers
-        headers = {
-            'x-rapidapi-host': "quoteai.p.rapidapi.com",
-            'x-rapidapi-key': "513b4d165fmsh4c349204d03662dp1d7b72jsn7bad13d69a6f"
-            }
-        #Send and get response
-        response = requests.request("GET", url, headers=headers)
-        data = response.json()
-
-        #Parse JSON output
-        quote = str(data['quote'] + "<br>")
-        author = "--" + str(data['author'])
-        
-        results.append(quote)
-        results.append(author)
-
-        #Direct parsed output to form
-        return render_template('home.html', results=results)
-
-    #Catch error and print error output
-    except:
-        results.append("Error encountered, please try again later.")
-        return render_template('home.html', results=results)
-
 #HTTP POST for COVID-19 data
 @app.route('/trackCOVID', methods=['POST'])
 def getCOVIDData():
