@@ -2,7 +2,7 @@
 
 <h1>Python/Flask Web App for Projects</h1>
 
-<h3>To run:</h3>
+<h3>To run locally:</h3>
   <ul>
     <li>Download full directory</li>
     <li>Run application.py</li>
