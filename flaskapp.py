@@ -33,26 +33,26 @@ def getQuote():
 
     #Try POST
     try:
+        
+        #Query string
+        querystring = {"token":"ipworld.info"}
 
         #Endpoint
-        url = "https://quotes15.p.rapidapi.com/quotes/random/"
-
-        querystring = {"language_code":"en"}
+        url = "https://quotes-inspirational-quotes-motivational-quotes.p.rapidapi.com/quote"
 
         #Request headers
         headers = {
-            'x-rapidapi-host': "quotes15.p.rapidapi.com",
-            'x-rapidapi-key': "513b4d165fmsh4c349204d03662dp1d7b72jsn7bad13d69a6f"
-            }
+        'x-rapidapi-host': "quotes-inspirational-quotes-motivational-quotes.p.rapidapi.com",
+        'x-rapidapi-key': "513b4d165fmsh4c349204d03662dp1d7b72jsn7bad13d69a6f"
+        }
 
         #Send and get response
         response = requests.request("GET", url, headers=headers, params=querystring)
         data = response.json()
 
         #Parse JSON output
-        quote = str(data['content'] + "<br>")
-        originator = data['originator']
-        author = "--" + str(originator['name'])
+        quote = str(data['text'] + "<br>")
+        author = "--" + str(data['author'])
         
         results.append(quote)
         results.append(author)
