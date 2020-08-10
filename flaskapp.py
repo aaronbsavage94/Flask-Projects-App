@@ -118,59 +118,110 @@ def requestStock():
     #Initialize variables
     picker = request.form["ticker"]
     results = ""
+    ticker_type = request.form["ticker_type"]
+    
+    #If ETF, don't query company name as that endpoint does not work for non-company tickers
+    if ticker_type == "ETF":
 
-    #Try POST
-    try:
+        #Try POST
+        try:
 
-        #Form query from HTML form
-        queryString = {"symbol":picker}
+            #Form query from HTML form
+            queryString = {"symbol":picker}
 
-        #Endpoints
-        url = "https://finnhub-realtime-stock-price.p.rapidapi.com/quote"
-        url1 = "https://finnhub.io/api/v1/stock/profile2?symbol="+picker+"&token=bpkgs0vrh5rcgrlra5v0"
+            #Endpoints
+            url = "https://finnhub-realtime-stock-price.p.rapidapi.com/quote"
 
-        #Request header for first request
-        headers = {
-            'x-rapidapi-host': "finnhub-realtime-stock-price.p.rapidapi.com",
-            'x-rapidapi-key': "513b4d165fmsh4c349204d03662dp1d7b72jsn7bad13d69a6f"
-            }
+            #Request header for first request
+            headers = {
+                'x-rapidapi-host': "finnhub-realtime-stock-price.p.rapidapi.com",
+                'x-rapidapi-key': "513b4d165fmsh4c349204d03662dp1d7b72jsn7bad13d69a6f"
+                }
 
-        #Responses
-        response = requests.request("GET", url, headers=headers, params=queryString)
-        data = response.json()
+            #Responses
+            response = requests.request("GET", url, headers=headers, params=queryString)
+            data = response.json()
+
+            #Parse responses
+            ticker = "Ticker: " + picker + '<br/>'
+            current = "Current price: " + str(data['c']) + '<br/>'
+            high = "High of the day: " + str(data['h']) + '<br/>'
+            low = "Low of the day: " + str(data['l']) + '<br/>'
+            opening = "Opening price of the day: " + str(data['o']) + '<br/>'
+            previous = "Previous close price: " + str(data['pc']) + '<br/>'
+            timestamp = "Timestamp: " + str(data['t'])
+
+            #Append to results var
+            results += ticker 
+            results += current
+            results += high
+            results += low
+            results += opening
+            results += previous
+            results += timestamp
+
+            #Direct parsed response to form
+            return render_template('stockcheck.html', title="Stock Price Checker", results=results)
         
-        response1 =  requests.get(url1)
-        data1 = response1.json()
+        #Catch errors and return error message
+        except:
+            results += "Error encountered. Please double check your ticker or try again later."
+            return render_template('stockcheck.html', title="Stock Price Checker", results=results)
+    
+    #Else query both endpoints for company information
+    else:
 
-        #Parse responses
-        company_string = str(data1["name"]) + " - " + str(data1["exchange"]) + '<br/>'
-        ticker = "Ticker: " + picker + '<br/>'
-        currency = "Currency: " + str(data1["currency"]) + '<br/>'
-        current = "Current price: " + str(data['c']) + '<br/>'
-        high = "High of the day: " + str(data['h']) + '<br/>'
-        low = "Low of the day: " + str(data['l']) + '<br/>'
-        opening = "Opening price of the day: " + str(data['o']) + '<br/>'
-        previous = "Previous close price: " + str(data['pc']) + '<br/>'
-        timestamp = "Timestamp: " + str(data['t'])
+        #Try POST
+        try:
+            #Form query from HTML form
+            queryString = {"symbol":picker}
 
-        #Append to results var
-        results += company_string
-        results += ticker 
-        results += currency
-        results += current
-        results += high
-        results += low
-        results += opening
-        results += previous
-        results += timestamp
+            #Endpoints
+            url = "https://finnhub-realtime-stock-price.p.rapidapi.com/quote"
+            url1 = "https://finnhub.io/api/v1/stock/profile2?symbol="+picker+"&token=bpkgs0vrh5rcgrlra5v0"
 
-        #Direct parsed response to form
-        return render_template('stockcheck.html', title="Stock Price Checker", results=results)
+            #Request header for first request
+            headers = {
+                'x-rapidapi-host': "finnhub-realtime-stock-price.p.rapidapi.com",
+                'x-rapidapi-key': "513b4d165fmsh4c349204d03662dp1d7b72jsn7bad13d69a6f"
+                }
 
-    #Catch errors and return error message
-    except:
-        results.append("Error encountered, please double check your ticker or try again later.")
-        return render_template('stockcheck.html', title="Stock Price Checker", results=results)
+            #Responses
+            response = requests.request("GET", url, headers=headers, params=queryString)
+            data = response.json()
+            
+            response1 =  requests.get(url1)
+            data1 = response1.json()
+
+            #Parse responses
+            company_string = str(data1["name"]) + " - " + str(data1["exchange"]) + '<br/>'
+            ticker = "Ticker: " + picker + '<br/>'
+            currency = "Currency: " + str(data1["currency"]) + '<br/>'
+            current = "Current price: " + str(data['c']) + '<br/>'
+            high = "High of the day: " + str(data['h']) + '<br/>'
+            low = "Low of the day: " + str(data['l']) + '<br/>'
+            opening = "Opening price of the day: " + str(data['o']) + '<br/>'
+            previous = "Previous close price: " + str(data['pc']) + '<br/>'
+            timestamp = "Timestamp: " + str(data['t'])
+
+            #Append to results var
+            results += company_string
+            results += ticker 
+            results += currency
+            results += current
+            results += high
+            results += low
+            results += opening
+            results += previous
+            results += timestamp
+
+            #Direct parsed response to form
+            return render_template('stockcheck.html', title="Stock Price Checker", results=results)
+
+        #Catch errors and return error message
+        except:
+            results += "Error encountered. Please double check your ticker or try again later."
+            return render_template('stockcheck.html', title="Stock Price Checker", results=results)
 
 #HTTP POST for weather check
 @app.route('/checkWeather', methods=['POST'])
