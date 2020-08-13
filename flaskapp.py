@@ -1,6 +1,8 @@
 import requests
 import json
 from flask import Flask, render_template, request
+import traceback
+import logging
 
 app=Flask(__name__)
 
@@ -26,9 +28,71 @@ def weather():
 def covid():
     return render_template('covid_tracking.html', title="COVID-19 Tracking")
 
+#Render Market News Page
+@app.route("/market")
+def marketnews():
+    return render_template('marketnews.html', title="Market News")
+
+#HTTP POST for Top Market Headlines data
+@app.route('/marketCheck', methods=['POST'])
+def marketCheck():
+    results = []
+    headlineArray = []
+    
+    #Try POST
+    try:
+
+        #Endpoint
+        response = requests.get('https://finnhub.io/api/v1/news?category=general&token=bpkgs0vrh5rcgrlra5v0')
+        data = response.json()
+
+        #If invalid API response, return error to form
+        if "Invalid API" in data:
+            results.append("Error encountered, please try again later. It appears the API key may be invalid.")
+            return render_template('marketnews.html', title="Market Headlines", results=results)
+
+        else:
+            
+            #For each in data response        
+            for d in data:
+
+                #Change encoding and strip ASCII characters to work around unicode hell
+                headline = (json.dumps(d['headline'], ensure_ascii=False)).encode("utf8")
+                headline = headline.decode('ascii', 'ignore')
+                summary = (json.dumps(d['summary'], ensure_ascii=False)).encode("utf8")
+                summary = summary.decode('ascii', 'ignore')                
+
+                #If just quotes
+                if headline != '""':
+                    if summary != '""':
+
+                        #Trim quotes and backslashes
+                        headline = headline.replace("\\""","")
+                        headline = headline[1:-1]
+                        summary = summary.replace("\\""","")
+                        summary = summary[1:-1]
+
+                        #Append results and formatting HTML
+                        results.append(headline + "<br>")
+                        results.append("<ul><li>" + summary + "</li></ul><br>")
+
+            #Append closing unordered list HTML
+            results.append("</ul>")
+
+            #Direct output to form
+            return render_template('marketnews.html', title="Market News", results=results)
+
+    #Catch error, return error message
+    except Exception as e:
+        results.append("Error encountered, please try again later. Exception details: " + e)
+        return render_template('marketnews.html', title="Market News", results=results)
+
 #HTTP POST for COVID-19 data
 @app.route('/trackCOVID', methods=['POST'])
 def getCOVIDData():
+
+    #Variables
+    temparray = []
     results = []
     
     #Try POST
@@ -40,36 +104,43 @@ def getCOVIDData():
 
         #If invalid API response, return error to form
         if "Invalid API" in data:
-            results.append("Error encountered, please try again later.")
+            results.append("Error encountered, please try again later. It appears the API key may be invalid.")
             return render_template('covid_tracking.html', title="COVID-19 Tracking", results=results)
 
         #Else, change encoding of each object in JSON response for Linux host and redirect to form
         else:
 
-            #Append HTML for textarea         
+            #Append HTML for textarea and unordered list
             results.append('<textarea class="form-control" id="result" rows="15" readonly>')
 
             #For each object in the reply        
             for d in data:
+                
+                #Initialize variables
+                state = str(d['state'])
+                case = str(d['case'])
+                death = str(d['death'])
+                updated = str(d['updated'])
 
-                #Change string encoding
-                d = (json.dumps(d, ensure_ascii=False)).encode("utf8")
+                #Concatenate strings and append to temparray
+                temparray.append("State: " + state + ", " + "Cases: " + case + ", " + "Deaths: " + death + ", " + "Updated: " + updated)
 
-                #Trim first and last characters to remove JSON brackets
-                d = d[1:-1]
+            #Sort array by alphabetical (state)
+            sortedarray = sorted(temparray)
 
-                #Append to results
-                results.append(d)
+            #For each indice in the sortedarray, append it to results
+            for i in sortedarray:
+                results.append(i)
 
-            #Append HTML for textarea
+            #Append HTML for textarea and new line break
             results.append('</textarea><br>')
             
             #Direct output to form
             return render_template('covid_tracking.html', title="COVID-19 Tracking", results=results)
 
     #Catch error, return error message
-    except:
-        results.append("Error encountered, please try again later.")
+    except Exception as e:
+        results.append("Error encountered, please try again later. Exception details: " + e)
         return render_template('covid_tracking.html', title="COVID-19 Tracking", results=results)
 
 #HTTP POST for stock price check
@@ -125,8 +196,8 @@ def requestStock():
             return render_template('stockcheck.html', title="Stock Price Checker", results=results)
         
         #Catch errors and return error message
-        except:
-            results += "Error encountered. Please double check your ticker or try again later."
+        except Exception as e:
+            results += "Error encountered. Please double check your ticker or try again later. Exception details: " + e
             return render_template('stockcheck.html', title="Stock Price Checker", results=results)
     
     #Else query both endpoints for company information
@@ -180,8 +251,8 @@ def requestStock():
             return render_template('stockcheck.html', title="Stock Price Checker", results=results)
 
         #Catch errors and return error message
-        except:
-            results += "Error encountered. Please double check your ticker or try again later."
+        except Exception as e:
+            results += "Error encountered. Please double check your ticker or try again later. Exception details: " + e
             return render_template('stockcheck.html', title="Stock Price Checker", results=results)
 
 #HTTP POST for weather check
@@ -232,8 +303,8 @@ def checkWeather():
         return render_template('weathercheck.html', title="Check the Weather", results=results)
 
     #Catch error and return error response
-    except:
-        results.append("Error encountered. Double check your zip code or try again later.")
+    except Exception as e:
+        results.append("Error encountered. Double check your zip code or try again later. Exception details: " + e)
         return render_template('weathercheck.html', title="Check the Weather", results=results)
 
 #Main method

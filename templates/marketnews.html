@@ -4,8 +4,8 @@
     <body class="bg-dark text-white">
         <div class="container">
             <br><br>
-            <h1>COVID-19 Tracking</h1> <br>
-                <form method="POST" action="/trackCOVID" class="form-inline">
+            <h1>Get the Top Market Headlines</h1> <br>
+                <form method="POST" action="/marketCheck" class="form-inline">
                     <div class="form-group mx-sm-3 mb-2">
                         <button type="submit" class="btn btn-primary mb-2">Check</button>
                     </div>
@@ -17,6 +17,7 @@
                     {% endfor %}
                 {% endautoescape %}
 
+            <br><br>
             <h6>Using finnhub's <a href="https://finnhub.io/docs/api" target="_blank">API</a></h6>
         </div>
     </body>
