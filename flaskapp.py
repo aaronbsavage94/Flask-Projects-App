@@ -123,7 +123,7 @@ def getCOVIDData():
                 updated = str(d['updated'])
 
                 #Concatenate strings and append to temparray
-                temparray.append("State: " + state + ", " + "Cases: " + case + ", " + "Deaths: " + death + ", " + "Updated: " + updated)
+                temparray.append("State/Population: " + state + ", " + "Cases: " + case + ", " + "Deaths: " + death + ", " + "Updated: " + updated)
 
             #Sort array by alphabetical (state)
             sortedarray = sorted(temparray)
