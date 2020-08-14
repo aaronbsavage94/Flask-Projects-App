@@ -76,7 +76,7 @@ def marketCheck():
                         summary = summary[1:-1]
 
                         #Append results and formatting HTML for bullets and the headline links
-                        results.append("<a href=" + url + " target=_blank class='text-light'>" + headline + "</a><br>")
+                        results.append("<a href=" + url + " target=_blank class='text-info'>" + headline + "</a><br>")
                         results.append("<ul><li>" + summary + "</li></ul><br>")
 
             #Append closing unordered list HTML
