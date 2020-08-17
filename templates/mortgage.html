@@ -1,0 +1,50 @@
+{% include "navbar.html" %}
+
+{% block content %}
+    <body class="bg-dark text-white">
+        <div class="container">
+            <br><br>
+            <h1>Check Rates</h1><br>
+                
+            <form method="POST" action="/checkRates" class="form-inline">
+              <div class="form-group mx-sm-3 mb-2">
+                <input type="text" class="form-control" id="zip" name="zip" placeholder="Zip Code" maxlength="5" required >
+              </div>
+              <button type="submit" class="btn btn-primary mb-2">Check!</button>
+            </form><br>
+
+            {% autoescape false %}
+                {{ results }}
+            {% endautoescape %}
+
+            <br><br>
+            <h1>Mortgage Calculation</h1><br>
+
+            <form method="POST" action="/calculateMortgage">
+                <div class="form-inline">
+                    <div class="col-xs-2">
+                        <input type="text" class="form-control" id="hoi" name="hoi" placeholder="Monthly Insurance" required >
+                        <input type="text" class="form-control" id="tax_rate" name="tax_rate" placeholder="Tax Rate" required >
+                        <input type="text" class="form-control" id="downpayment" name="downpayment" placeholder="Down Payment (dollars)"  required >
+                    </div>
+                </div><br>
+                <div class="form-inline">
+                    <div class="col-xs-2">
+                        <input type="text" class="form-control" id="price" name="price" placeholder="Price"  required >
+                        <input type="text" class="form-control" id="term" name="term" placeholder="Term (years)"  required >
+                        <input type="text" class="form-control" id="rate" name="rate" placeholder="Rate" required >
+                    </div>
+                </div><br>
+
+                <button type="submit" class="btn btn-primary mb-2">Check!</button>
+              </form><br>
+  
+              {% autoescape false %}
+                  {{ results2 }}
+              {% endautoescape %}
+  
+              <br><br>          
+            <h6>Using Realtor<a href="https://rapidapi.com/apidojo/api/realtor?endpoint=apiendpoint_dd3b9426-16b8-4311-a389-a58b2bfd4eda" target="_blank"> API</a></h6>
+        </div>
+    </body>
+{% endblock %}

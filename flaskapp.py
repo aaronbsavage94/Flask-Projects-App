@@ -17,6 +17,11 @@ def home():
 @app.route("/stockcheck")
 def picker():
     return render_template('stockcheck.html', title="Stock Price Checker")
+    
+#Render Mortgage Tool Kit Page
+@app.route("/mortgage")
+def mortgage():
+    return render_template('mortgage.html')
 
 #Render Weather Page
 @app.route("/weather")
@@ -146,6 +151,122 @@ def getCOVIDData():
         results.append("Error encountered, please try again later. Exception details: " + e)
         return render_template('covid_tracking.html', title="COVID-19 Tracking", results=results)
 
+#HTTP POST for mortgage rate check
+@app.route('/checkRates', methods=['POST'])
+def checkRates():
+
+    #Initialize variables
+    zip = request.form["zip"]
+    results = ""
+
+    #Try POST
+    try:
+        url = "https://realtor.p.rapidapi.com/finance/rates"
+
+        querystring = {"loc":zip}
+
+        headers = {
+            'x-rapidapi-host': "realtor.p.rapidapi.com",
+            'x-rapidapi-key': "513b4d165fmsh4c349204d03662dp1d7b72jsn7bad13d69a6f"
+            }
+
+        #Send request and get response
+        response = requests.request("GET", url, headers=headers, params=querystring)
+        data = response.json()
+        
+        #Weather objects
+        rates_key = data['rates']
+
+        #Parse responses
+        zip_return = "Your Zip Code: " + zip + '<br/>'
+        property_tax = "Property Tax: " + str(rates_key['property_tax']) + '<br/>'
+        insurance_rate = "Insurance Rate: " + str(rates_key['insurance_rate']) + '<br/>'
+        average_30_year = "Average Rate for 30 Year Fixed: " + str(rates_key['average_rate_30_year']) + '<br/>'
+        average_rate_30_year_fha = "Average Rate for 30 Year FHA: " + str(rates_key['average_rate_30_year_fha']) + '<br/>'
+        average_rate_30_year_va = "Average Rate for 30 Year VA: " + str(rates_key['average_rate_30_year_va']) + '<br/>'
+        average_rate_20_year = "Average Rate for 20 Year Fixed: " + str(rates_key['average_rate_20_year']) + '<br/>'
+        average_rate_15_year = "Average Rate for 15 Year Fixed: " + str(rates_key['average_rate_15_year']) + '<br/>'
+        average_rate_51_arm = "Average Rate for 5/1 ARM: " + str(rates_key['average_rate_51_arm']) + '<br/>'
+        average_rate_71_arm = "Average Rate for 7/1 ARM: " + str(rates_key['average_rate_71_arm']) + '<br/>'
+
+        #Append to results var
+        results += zip_return
+        results += property_tax 
+        results += insurance_rate
+        results += average_30_year
+        results += average_rate_30_year_fha
+        results += average_rate_30_year_va
+        results += average_rate_20_year
+        results += average_rate_15_year
+        results += average_rate_51_arm
+        results += average_rate_71_arm
+
+        #Direct parsed response to form
+        return render_template('mortgage.html', title="Mortgage Tool Kit", results=results)
+    
+    #Catch errors and return error message
+    except Exception as e:
+        results += "Error encountered. Please double check your zip code or try again later. Exception details: " + e
+        return render_template('mortgage.html', title="Mortgage Tool Kit", results=results)
+
+#HTTP POST for mortgage rate calculation
+@app.route('/calculateMortgage', methods=['POST'])
+def calculateMortgage():
+
+    #Initialize variables
+    hoi = request.form["hoi"]
+    tax_rate = request.form["tax_rate"]
+    downpayment = request.form["downpayment"]
+    price = request.form["price"]
+    term = request.form["term"]
+    rate = request.form["rate"]
+    results = ""
+
+    #Try POST
+    try:
+
+        url = "https://realtor.p.rapidapi.com/mortgage/calculate"
+
+        querystring = {"hoi":hoi,"tax_rate":tax_rate,"downpayment":downpayment,"price":price,"term":term,"rate":rate}
+
+        headers = {
+            'x-rapidapi-host': "realtor.p.rapidapi.com",
+            'x-rapidapi-key': "513b4d165fmsh4c349204d03662dp1d7b72jsn7bad13d69a6f"
+            }
+
+        #Send request and get response
+        response = requests.request("GET", url, headers=headers, params=querystring)
+        data = response.json()
+        
+        #Weather objects
+        mortgage_key = data['mortgage']
+
+        #Parse responses
+        loan_amount = "Loan Amount: " + str(mortgage_key['loan_amount']) + '<br/>'
+        rate = "Rate: " + str(mortgage_key['rate']) + '<br/>'
+        term = "Term: " + str(mortgage_key['term']) + '<br/>'
+        monthly_payment = "Monthly Payment: " + str(mortgage_key['monthly_payment']) + '<br/>'
+        principal_and_interest = "Principal and Interest: " + str(mortgage_key['principal_and_interest']) + '<br/>'
+        monthly_property_taxes = "Monthly Property Taxes: " + str(mortgage_key['monthly_property_taxes']) + '<br/>'
+        monthly_home_insurance = "Monthly Home Insurance: " + str(mortgage_key['monthly_home_insurance']) + '<br/>'
+
+        #Append to results var
+        results += loan_amount
+        results += rate 
+        results += term
+        results += monthly_payment
+        results += principal_and_interest
+        results += monthly_property_taxes
+        results += monthly_home_insurance
+
+        #Direct parsed response to form
+        return render_template('mortgage.html', title="Mortgage Tool Kit", results2=results)
+    
+    #Catch errors and return error message
+    except Exception as e:
+        results += "Error encountered. Please double check your zip code or try again later. Exception details: " + e
+        return render_template('mortgage.html', title="Mortgage Tool Kit", results2=results)   
+     
 #HTTP POST for stock price check
 @app.route('/requestStock', methods=['POST'])
 def requestStock():
