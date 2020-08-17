@@ -161,8 +161,11 @@ def checkRates():
 
     #Try POST
     try:
+
+        #Endpoint
         url = "https://realtor.p.rapidapi.com/finance/rates"
 
+        #Query and headers
         querystring = {"loc":zip}
 
         headers = {
@@ -225,8 +228,10 @@ def calculateMortgage():
     #Try POST
     try:
 
+        #Endpoint
         url = "https://realtor.p.rapidapi.com/mortgage/calculate"
 
+        #Query and headers
         querystring = {"hoi":hoi,"tax_rate":tax_rate,"downpayment":downpayment,"price":price,"term":term,"rate":rate}
 
         headers = {
