@@ -6,10 +6,6 @@ from flask import Flask, render_template, request
 
 app=Flask(__name__)
 
-#Main method
-if __name__ == '__main__':
-    app.run(debug=True)
-
 @app.route("/")
 
 #Render Home Page
@@ -35,7 +31,22 @@ def weather():
 #Render COVID-19 Page
 @app.route("/covid")
 def covid():
-    return render_template('covid_tracking.html', title="COVID-19 Tracking")
+
+    #Endpoint and variables
+    counter = 0
+    counterArray = []
+    response = requests.get('https://finnhub.io/api/v1/covid19/us?token=bpkgs0vrh5rcgrlra5v0')
+    data = response.json()
+
+    #For each object in response, parse death value to counterArray     
+    for d in data:
+        counterArray.append(int(d['death']))
+    
+    #For each int in counterArray, recursively add up
+    for i in counterArray:
+        counter += i
+
+    return render_template('covid_tracking.html', title="COVID-19 Tracking", counter=str(counter))
 
 #Render Market News Page
 @app.route("/market")
@@ -106,6 +117,8 @@ def getCOVIDData():
     #Variables
     temparray = []
     results = []
+    counterArray = []
+    counter = 0
     
     #Try POST
     try:
@@ -121,6 +134,16 @@ def getCOVIDData():
 
         #Else, change encoding of each object in JSON response for Linux host and redirect to form
         else:
+            
+            
+
+            #For each object in response, parse death value to counterArray     
+            for d in data:
+                counterArray.append(int(d['death']))
+            
+            #For each int in counterArray, recursively add up
+            for i in counterArray:
+                counter += i
 
             #Append HTML for textarea and unordered list
             results.append('<textarea class="form-control" id="result" rows="15" readonly>')
@@ -148,12 +171,12 @@ def getCOVIDData():
             results.append('</textarea><br>')
             
             #Direct output to form
-            return render_template('covid_tracking.html', title="COVID-19 Tracking", results=results)
+            return render_template('covid_tracking.html', title="COVID-19 Tracking", results=results, counter=str(counter))
 
     #Catch error, return error message
     except Exception as e:
         results.append("Error encountered, please try again later. Exception details: " + e)
-        return render_template('covid_tracking.html', title="COVID-19 Tracking", results=results)
+        return render_template('covid_tracking.html', title="COVID-19 Tracking", results=results, counter=str(counter))
 
 #HTTP POST for mortgage rate check
 @app.route('/checkRates', methods=['POST'])
@@ -439,3 +462,7 @@ def checkWeather():
     except Exception as e:
         results.append("Error encountered. Double check your zip code or try again later. Exception details: " + e)
         return render_template('weathercheck.html', title="Check the Weather", results=results)
+
+#Main method
+if __name__ == '__main__':
+    app.run(debug=True)
