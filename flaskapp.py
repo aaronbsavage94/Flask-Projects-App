@@ -6,6 +6,10 @@ import logging
 
 app=Flask(__name__)
 
+#Main method
+if __name__ == '__main__':
+    app.run(debug=True)
+
 @app.route("/")
 
 #Render Home Page
@@ -435,7 +439,3 @@ def checkWeather():
     except Exception as e:
         results.append("Error encountered. Double check your zip code or try again later. Exception details: " + e)
         return render_template('weathercheck.html', title="Check the Weather", results=results)
-
-#Main method
-if __name__ == '__main__':
-    app.run(debug=True)
