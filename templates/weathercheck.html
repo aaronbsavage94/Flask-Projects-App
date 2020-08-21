@@ -15,9 +15,11 @@
             </form><br>
 
             <h6>
-                {% for result in results %}
-                  {{ result }}
-                {% endfor %}
+              {% autoescape false %}
+                  {% for result in results %}
+                    {{ result }}
+                  {% endfor %}
+              {% endautoescape %}
             </h6>
 
             <br><br>
