@@ -13,6 +13,11 @@ app=Flask(__name__)
 def home():
     return render_template('home.html')
 
+#Render YouTube Search
+@app.route("/youtube")
+def youtube():
+    return render_template('youtube.html')
+
 #Render Stock Page
 @app.route("/stockcheck")
 def picker():
@@ -52,6 +57,58 @@ def covid():
 @app.route("/market")
 def marketnews():
     return render_template('marketnews.html', title="Market News")
+
+#HTTP POST for YouTube search
+@app.route('/searchYouTube', methods=['POST'])
+def searchYouTube():
+    
+    #Try POST
+    try:   
+        #Initialize variables
+        search = request.form["search"]
+        results = []
+        
+        #Endpoint
+        url = "https://youtube-search-results.p.rapidapi.com/youtube-search/"
+
+        #Query string and headers
+        querystring = {"q":search}
+
+        headers = {
+            'x-rapidapi-host': "youtube-search-results.p.rapidapi.com",
+            'x-rapidapi-key': "513b4d165fmsh4c349204d03662dp1d7b72jsn7bad13d69a6f"
+            }
+
+        #Send and get response JSON
+        response = requests.request("GET", url, headers=headers, params=querystring)
+        data = response.json()
+
+        #Grab items key
+        items = data['items']
+
+        #For each item
+        for i in items:
+            
+            #If the title and link keys are present (not null)
+            if 'title' in i and 'link' in i:
+
+                #Build and append HTML
+                results.append('<div class="container">')
+                results.append('<div class="row" style="border:none"><div class="col-sm">')
+                results.append("<a href= " + i['link'] + " target=_blank><img src=" + i['thumbnail'] + '"/></a></div>')
+                results.append('<div class="col-sm">')
+                results.append("<a href= " + i['link'] + " target=_blank>" + i['title'] + "</a>")
+                results.append("<p>" + i['description'] + "</p></div>")
+                results.append("</div></div><br>")
+        
+        #Direct output to form
+        return render_template('youtube.html', title="Search YouTube", results=results)
+
+
+    #Catch error, return error message
+    except Exception as e:
+        results.append("Error encountered. Please try again later.<br>Exception details: " + str(e))
+        return render_template('youtube.html', title="Search YouTube", results=results)
 
 #HTTP POST for Top Market Headlines data
 @app.route('/marketCheck', methods=['POST'])

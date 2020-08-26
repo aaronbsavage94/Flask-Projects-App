@@ -1,0 +1,25 @@
+{% include "navbar.html" %}
+
+{% block content %}
+    <body class="bg-dark text-white">
+        <div class="container">
+            <br><br>
+            <h1>Search YouTube</h1><br>
+            <form method="POST" action="/searchYouTube" class="form-inline">
+              <div class="form-group mx-sm-3 mb-2">
+                <input type="text" class="form-control" id="search" name="search" placeholder="Search..." required >
+              </div>
+              <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i></button>
+            </form><br><br>
+
+                {% autoescape false %}
+                    {% for result in results %}
+                        {{ result }}
+                    {% endfor %}
+                {% endautoescape %}
+
+            <br><br>
+            <h6>Using YouTube Search <a href="https://rapidapi.com/marindelija/api/youtube-search-results/" target="_blank">API</a></h6>
+        </div>
+    </body>
+{% endblock %}
