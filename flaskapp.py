@@ -103,7 +103,7 @@ def searchYouTube():
                 #Build and append HTML
                 results.append('<div class="container">')
                 results.append('<div class="row" style="border:none"><div class="col">')
-                results.append("<a href= " + i['link'] + " target=_blank><img src=" + i['thumbnail'] + '"class="img-fluid" /></a></div>')
+                results.append("<a href= " + i['link'] + ' target=_blank><img class="img-fluid" src=' + i['thumbnail'] + '/></a></div>')
                 results.append('<div class="col">')
                 results.append("<a href= " + i['link'] + " target=_blank>" + i['title'] + "</a>")
                 results.append("<p>" + description + "</p></div>")
