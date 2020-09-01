@@ -12,13 +12,15 @@
               <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i></button>
             </form><br><br>
 
+            <div class="container-fluid">
                 {% autoescape false %}
                     {% for result in results %}
                         {{ result }}
                     {% endfor %}
                 {% endautoescape %}
-                
-            <h6>Using YouTube Search <a href="https://rapidapi.com/marindelija/api/youtube-search-results/" target="_blank">API</a></h6>
+            </div>  
+
+            <br><h6>Using YouTube Search <a href="https://rapidapi.com/marindelija/api/youtube-search-results/" target="_blank">API</a></h6>
         </div>
     </body>
 {% endblock %}
