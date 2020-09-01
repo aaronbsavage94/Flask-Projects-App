@@ -101,13 +101,12 @@ def searchYouTube():
                     description = i['description']
 
                 #Build and append HTML
-                results.append('<div class="container">')
-                results.append('<div class="row" style="border:none"><div class="col">')
-                results.append("<a href= " + i['link'] + ' target=_blank><img class="img-fluid" src=' + i['thumbnail'] + '/></a></div>')
+                results.append('<div class="row">')
+                results.append('<div class="col-sm">' + "<a href= " + i['link'] + ' target=_blank><img class="img-fluid" src=' + i['thumbnail'] + '/></a></div>')
                 results.append('<div class="col">')
                 results.append("<a href= " + i['link'] + " target=_blank>" + i['title'] + "</a>")
                 results.append("<p>" + description + "</p></div>")
-                results.append("</div></div><br>")
+                results.append("</div><br>")
         
         #Direct output to form
         return render_template('youtube.html', title="Search YouTube", results=results)
