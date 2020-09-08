@@ -14,16 +14,15 @@
               <button type="submit" class="btn btn-primary mb-2">Check!</button>
             </form><br>
 
-            <h6>
-              {% autoescape false %}
-                  {% for result in results %}
-                    {{ result }}
-                  {% endfor %}
-              {% endautoescape %}
-            </h6>
+          <h6>
+            {% autoescape false %}
+                {% for result in results %}
+                  {{ result }}
+                {% endfor %}
+            {% endautoescape %}
+          </h6>
 
-            <br><br>
-            <h6>Using OpenWeather's <a href="http://api.openweathermap.org" target="_blank">API</a></h6>
+          <h6>Using OpenWeather's <a href="http://api.openweathermap.org" target="_blank">API</a></h6>
         </div>
     </body>
 {% endblock %}

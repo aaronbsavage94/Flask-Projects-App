@@ -21,13 +21,12 @@
                     <button type="submit" class="btn btn-primary mb-2" data-toggle="tooltip" data-placement="top" title="Selecting Stock or ETF correctly will return more detailed information.">Check!</button>
                 </form><br>
 
-                <p>
-                    {% autoescape false %}
-                        {{ results }}
-                    {% endautoescape %}
-                </p>
-
-            <br><br>
+            <p>
+                {% autoescape false %}
+                    {{ results }}
+                {% endautoescape %}
+            </p>
+            
             <h6>Using finnhub's <a href="https://finnhub.io/docs/api" target="_blank">API</a></h6>
         </div>
     </body>
