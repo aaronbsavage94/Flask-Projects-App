@@ -268,7 +268,7 @@ def checkRates():
         response = requests.request("GET", url, headers=headers, params=querystring)
         data = response.json()
         
-        #Weather objects
+        #Rates object
         rates_key = data['rates']
 
         #Parse responses
@@ -334,7 +334,7 @@ def calculateMortgage():
         response = requests.request("GET", url, headers=headers, params=querystring)
         data = response.json()
         
-        #Weather objects
+        #Mortgage objects
         mortgage_key = data['mortgage']
 
         #Parse responses
