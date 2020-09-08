@@ -210,7 +210,7 @@ def getCOVIDData():
                 counter += i
 
             #Append HTML for textarea and unordered list
-            results.append('<textarea class="form-control" id="result" rows="15" readonly>')
+            results.append('<textarea class="form-control mb-3" id="result" rows="15" readonly>')
 
             #For each object in the reply        
             for d in data:
@@ -222,7 +222,7 @@ def getCOVIDData():
                 updated = str(d['updated'])
 
                 #Concatenate strings and append to temparray
-                temparray.append("State/Population: " + state + ", " + "Cases: " + case + ", " + "Deaths: " + death + ", " + "Updated: " + updated)
+                temparray.append("State/Population: " + state + ", " + "Cases: " + case + ", " + "Deaths: " + death)
 
             #Sort array by alphabetical (state)
             sortedarray = sorted(temparray)
@@ -232,7 +232,7 @@ def getCOVIDData():
                 results.append(i)
 
             #Append HTML for textarea and new line break
-            results.append('</textarea><br>')
+            results.append("</textarea><p>" + "Last update: " + updated + "</p>")
             
             #Direct output to form
             return render_template('covid_tracking.html', title="COVID-19 Tracking", results=results, counter=str(counter))
