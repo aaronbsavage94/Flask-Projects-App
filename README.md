@@ -2,6 +2,8 @@
 
 <h1>Python3/Flask Web App for Projects</h1>
 
+<h3>Hosted <a href="projects.aaronsavage.me" target=_blank>here</a></h3>
+
 <h3>To run locally:</h3>
   <ul>
     <li>Download full directory</li>
