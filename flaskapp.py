@@ -53,10 +53,62 @@ def covid():
 
     return render_template('covid_tracking.html', title="COVID-19 Tracking", counter=str(counter))
 
-#Render Market News Page
-@app.route("/market")
-def marketnews():
-    return render_template('marketnews.html', title="Market News")
+#HTTP POST and Render Market News page
+@app.route('/market')
+def marketNews():
+    results = []
+    headlineArray = []
+    
+    #Try POST
+    try:
+
+        #Endpoint
+        response = requests.get('https://finnhub.io/api/v1/news?category=general&token=bpkgs0vrh5rcgrlra5v0')
+        data = response.json()
+
+        #If invalid API response, return error to form
+        if "Invalid API" in data:
+            results.append("Error encountered, please try again later. It appears the API key may be invalid.")
+            return render_template('marketnews.html', title="Market News", results=results)
+
+        else:
+            
+            #For each in data response        
+            for d in data:
+
+                #Change encoding and strip ASCII characters to work around unicode hell
+                headline = (json.dumps(d['headline'], ensure_ascii=False)).encode("utf8")
+                headline = headline.decode('ascii', 'ignore')
+                summary = (json.dumps(d['summary'], ensure_ascii=False)).encode("utf8")
+                summary = summary.decode('ascii', 'ignore')
+
+                #Grab the URL values     
+                url = str(d['url'])            
+
+                #If just quotes
+                if headline != '""':
+                    if summary != '""':
+
+                        #Trim quotes and backslashes
+                        headline = headline.replace("\\""","")
+                        headline = headline[1:-1]
+                        summary = summary.replace("\\""","")
+                        summary = summary[1:-1]
+
+                        #Append results and formatting HTML for bullets and the headline links
+                        results.append("<a href=" + url + " target=_blank class='text-info'>" + headline + "</a><br>")
+                        results.append("<ul><li>" + summary + "</li></ul><br>")
+
+            #Append closing unordered list HTML
+            results.append("</ul>")
+
+            #Direct output to form
+            return render_template('marketnews.html', title="Market News", results=results)
+
+    #Catch error, return error message
+    except Exception as e:
+        results.append("Error encountered. Please double check your ticker or try again later.<br>Exception details: " + str(e))
+        return render_template('marketnews.html', title="Market News", results=results)
 
 #HTTP POST for YouTube search
 @app.route('/searchYouTube', methods=['POST'])
@@ -116,63 +168,6 @@ def searchYouTube():
     except Exception as e:
         results.append("Error encountered. Please try again later.<br>Exception details: " + str(e))
         return render_template('youtube.html', title="Search YouTube", results=results)
-
-#HTTP POST for Top Market Headlines data
-@app.route('/marketCheck', methods=['POST'])
-def marketCheck():
-    results = []
-    headlineArray = []
-    
-    #Try POST
-    try:
-
-        #Endpoint
-        response = requests.get('https://finnhub.io/api/v1/news?category=general&token=bpkgs0vrh5rcgrlra5v0')
-        data = response.json()
-
-        #If invalid API response, return error to form
-        if "Invalid API" in data:
-            results.append("Error encountered, please try again later. It appears the API key may be invalid.")
-            return render_template('marketnews.html', title="Market Headlines", results=results)
-
-        else:
-            
-            #For each in data response        
-            for d in data:
-
-                #Change encoding and strip ASCII characters to work around unicode hell
-                headline = (json.dumps(d['headline'], ensure_ascii=False)).encode("utf8")
-                headline = headline.decode('ascii', 'ignore')
-                summary = (json.dumps(d['summary'], ensure_ascii=False)).encode("utf8")
-                summary = summary.decode('ascii', 'ignore')
-
-                #Grab the URL values     
-                url = str(d['url'])            
-
-                #If just quotes
-                if headline != '""':
-                    if summary != '""':
-
-                        #Trim quotes and backslashes
-                        headline = headline.replace("\\""","")
-                        headline = headline[1:-1]
-                        summary = summary.replace("\\""","")
-                        summary = summary[1:-1]
-
-                        #Append results and formatting HTML for bullets and the headline links
-                        results.append("<a href=" + url + " target=_blank class='text-info'>" + headline + "</a><br>")
-                        results.append("<ul><li>" + summary + "</li></ul><br>")
-
-            #Append closing unordered list HTML
-            results.append("</ul>")
-
-            #Direct output to form
-            return render_template('marketnews.html', title="Market News", results=results)
-
-    #Catch error, return error message
-    except Exception as e:
-        results.append("Error encountered. Please double check your ticker or try again later.<br>Exception details: " + str(e))
-        return render_template('marketnews.html', title="Market News", results=results)
 
 #HTTP POST for COVID-19 data
 @app.route('/trackCOVID', methods=['POST'])
