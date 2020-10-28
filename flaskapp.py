@@ -179,7 +179,7 @@ def searchYouTube():
                 results.append('<div class="row">')
                 results.append('<div class="col-sm">' + "<a href= " + i['link'] + ' target=_blank><img class="img-fluid img-thumbnail rounded" src=' + i['thumbnail'] + '/></a></div>')
                 results.append('<div class="col-sm">')
-                results.append("<a href= " + i['link'] + " target=_blank>" + i['title'] + "</a></div>)
+                results.append("<a href= " + i['link'] + " target=_blank>" + i['title'] + "</a></div>")
                 results.append("</div><br><br>")
         
         #Direct output to form
