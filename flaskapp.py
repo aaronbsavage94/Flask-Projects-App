@@ -555,8 +555,8 @@ def checkWeather():
         return render_template('weathercheck.html', title="Check the Weather", results=results)
 
 #Upload method
-@app.route('/upload', methods=['GET', 'POST'])
-def upload():
+@app.route('/greyImage', methods=['GET', 'POST'])
+def greyImage():
 
     try:
         uploaded_file = request.files['file']
