@@ -19,11 +19,8 @@ app.config['UPLOAD_PATH'] = 'uploads'
 uploads_dir = os.path.join(app.instance_path, 'uploads')
 
 #If it does not exist already, create it
-try:
-    if not os.path.exists('./instance/uploads'):
-        os.makedirs(uploads_dir, exist_ok=True)
-except: OSError as err:
-    print(err)
+if not os.path.exists('./instance/uploads'):
+    os.makedirs(uploads_dir, exist_ok=True)
 
 #Image validation
 def validate_image(stream):
