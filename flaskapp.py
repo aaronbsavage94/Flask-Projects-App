@@ -11,7 +11,6 @@ from flask import Flask, render_template, request, redirect, url_for, abort, sen
 
 #Config
 app=Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
 app.config['UPLOAD_PATH'] = '/home/ubuntu/Flask-Projects-App/instance/uploads'
 
