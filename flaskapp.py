@@ -19,8 +19,11 @@ app.config['UPLOAD_PATH'] = 'uploads'
 uploads_dir = os.path.join(app.instance_path, 'uploads')
 
 #If it does not exist already, create it
-if not os.path.exists('./instance/uploads'):
-    os.makedirs(uploads_dir)
+try:
+    if not os.path.exists('./instance/uploads'):
+        os.makedirs(uploads_dir, exist_ok=True)
+except: OSError as err:
+    print(err)
 
 #Image validation
 def validate_image(stream):
@@ -550,7 +553,7 @@ def checkWeather():
     except Exception as e:
         results.append("Error encountered. Please double check your ticker or try again later.<br>Exception details: " + str(e))
         return render_template('weathercheck.html', title="Check the Weather", results=results)
-        
+
 #Upload method
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
