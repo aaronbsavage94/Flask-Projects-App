@@ -189,7 +189,7 @@ def searchYouTube():
                 results.append('<div class="col-sm">')
                 results.append("<a href= " + i['link'] + " target=_blank>" + i['title'] + "</a>")
                 results.append("<p>" + description + "</p></div>")
-                results.append("</div><br>")
+                results.append("</div><br><br>")
         
         #Direct output to form
         return render_template('youtube.html', title="Search YouTube", results=results)
