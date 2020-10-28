@@ -574,7 +574,7 @@ def greyImage():
             uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
 
         #Concatenate file path
-        filestring = "./uploads/" + filename
+        filestring = "./instance/uploads/" + filename
         filename = os.path.join(filestring)
         original = io.imread(filename)
 
