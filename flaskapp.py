@@ -174,21 +174,12 @@ def searchYouTube():
             
             #If the title and link keys are present
             if 'title' in i and 'link' in i:
-                
-                #If description value is a NoneType
-                if i['description'] is None:
-                    description = "No Description."
-                
-                #Else, default to actual value
-                else:
-                    description = i['description']
 
                 #Build and append HTML
                 results.append('<div class="row">')
                 results.append('<div class="col-sm">' + "<a href= " + i['link'] + ' target=_blank><img class="img-fluid img-thumbnail rounded" src=' + i['thumbnail'] + '/></a></div>')
                 results.append('<div class="col-sm">')
                 results.append("<a href= " + i['link'] + " target=_blank>" + i['title'] + "</a>")
-                results.append("<p>" + description + "</p></div>")
                 results.append("</div><br>")
         
         #Direct output to form
