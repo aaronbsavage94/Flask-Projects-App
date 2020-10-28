@@ -197,7 +197,7 @@ def searchYouTube():
 
     #Catch error, return error message
     except Exception as e:
-        results.append("Error encountered. Please try again later.<br>Exception details: " + str(e) + "<br>")
+        results.append("Error encountered. Please try again later.<br>Exception details: " + str(e) + "<br><br>")
         return render_template('youtube.html', title="Search YouTube", results=results)
 
 #HTTP POST for COVID-19 data
