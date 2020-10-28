@@ -589,7 +589,7 @@ def greyImage():
 
     #Return the exception and append the exception details to the HTML
     except Exception as e:
-        return render_template('home.html', results=str(e))
+        return render_template('rgb2grayscale.html', results=str(e))
 
 #Main method
 if __name__ == '__main__':
