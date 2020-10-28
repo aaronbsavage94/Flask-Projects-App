@@ -20,7 +20,7 @@ uploads_dir = os.path.join(app.instance_path, 'uploads')
 
 #If it does not exist already, create it
 try:
-    if not os.path.exists('./instance/uploads'):
+    if not os.path.exists('/home/ubuntu/Flask-Projects-App/instance/uploads'):
         os.makedirs(uploads_dir)
 except OSError:
     pass
@@ -574,7 +574,7 @@ def greyImage():
             uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
 
         #Concatenate file path
-        filestring = "./instance/uploads/" + filename
+        filestring = "/home/ubuntu/Flask-Projects-App/instance/uploads" + filename
         filename = os.path.join(filestring)
         original = io.imread(filename)
 
