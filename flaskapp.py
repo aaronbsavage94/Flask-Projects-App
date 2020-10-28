@@ -189,7 +189,7 @@ def searchYouTube():
                 results.append('<div class="col-sm">')
                 results.append("<a href= " + i['link'] + " target=_blank>" + i['title'] + "</a>")
                 results.append("<p>" + description + "</p></div>")
-                results.append("</div><br><br>")
+                results.append("</div><br>")
         
         #Direct output to form
         return render_template('youtube.html', title="Search YouTube", results=results)
@@ -197,7 +197,7 @@ def searchYouTube():
 
     #Catch error, return error message
     except Exception as e:
-        results.append("Error encountered. Please try again later.<br>Exception details: " + str(e))
+        results.append("Error encountered. Please try again later.<br>Exception details: " + str(e) + "<br>")
         return render_template('youtube.html', title="Search YouTube", results=results)
 
 #HTTP POST for COVID-19 data
