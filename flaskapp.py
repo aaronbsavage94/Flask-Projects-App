@@ -582,7 +582,7 @@ def greyImage():
         grayscale = rgb2gray(original)
 
         #Save the result
-        io.imsave('result.jpg', grayscale)
+        io.imsave('./result.jpg', grayscale)
 
         #Return the resulting file
         return send_file('./result.jpg', attachment_filename='result.jpg')
