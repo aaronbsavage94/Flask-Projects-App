@@ -173,7 +173,7 @@ def searchYouTube():
         for i in items:
             
             #If the title and link keys are present
-            if 'title' in i and 'link' in i:
+            if 'title' in i and 'link' in i and 'description' in i:
                 
                 #If description value is a NoneType
                 if i['description'] is None:
