@@ -13,7 +13,7 @@ from flask import Flask, render_template, request, redirect, url_for, abort, sen
 app=Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
-app.config['UPLOAD_PATH'] = './instance/uploads'
+app.config['UPLOAD_PATH'] = '/home/ubuntu/Flask-Projects-App/instance/uploads'
 
 # Create upload directory for files
 uploads_dir = os.path.join(app.instance_path, 'uploads')
