@@ -1,10 +1,35 @@
+import imghdr
+import os
 import requests
 import json
 import traceback
 import logging
-from flask import Flask, render_template, request
+from skimage import data, io
+from skimage.color import rgb2gray
+from werkzeug.utils import secure_filename
+from flask import Flask, render_template, request, redirect, url_for, abort, send_file
 
+#Config
 app=Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
+app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
+app.config['UPLOAD_PATH'] = 'uploads'
+
+# Create upload directory for files
+uploads_dir = os.path.join(app.instance_path, 'uploads')
+
+#If it does not exist already, create it
+if not os.path.exists('./instance/uploads'):
+    os.makedirs(uploads_dir)
+
+#Image validation
+def validate_image(stream):
+    header = stream.read(512)
+    stream.seek(0) 
+    format = imghdr.what(None, header)
+    if not format:
+        return None
+    return '.' + (format if format != 'jpeg' else 'jpg')
 
 @app.route("/")
 
@@ -33,6 +58,11 @@ def mortgage():
 def weather():
     return render_template('weathercheck.html', title="Check the Weather")
 
+#Render Weather Page
+@app.route("/rgb2gray")
+def rgb2grayscale():
+    return render_template('rgb2grayscale.html', title="Convert an Image to Grayscale")
+
 #Render COVID-19 Page
 @app.route("/covid")
 def covid():
@@ -57,8 +87,7 @@ def covid():
 @app.route('/market')
 def marketNews():
     results = []
-    headlineArray = []
-    
+
     #Try POST
     try:
 
@@ -521,6 +550,43 @@ def checkWeather():
     except Exception as e:
         results.append("Error encountered. Please double check your ticker or try again later.<br>Exception details: " + str(e))
         return render_template('weathercheck.html', title="Check the Weather", results=results)
+        
+#Upload method
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+
+    try:
+        uploaded_file = request.files['file']
+        filename = secure_filename(uploaded_file.filename)
+
+        #If the file is not null
+        if filename != '':
+            file_ext = os.path.splitext(filename)[1]
+
+            #If we fail the validation tests, throw a 400
+            if file_ext not in app.config['UPLOAD_EXTENSIONS'] or file_ext != validate_image(uploaded_file.stream):
+                abort(400)
+            
+            #Save uploaded file to directory
+            uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+
+        #Concatenate file path
+        filestring = "./uploads/" + filename
+        filename = os.path.join(filestring)
+        original = io.imread(filename)
+
+        #Rgb2gray
+        grayscale = rgb2gray(original)
+
+        #Save the result
+        io.imsave('result.jpg', grayscale)
+
+        #Return the resulting file
+        return send_file('./result.jpg', attachment_filename='result.jpg')
+
+    #Return the exception and append the exception details to the HTML
+    except Exception as e:
+        return render_template('home.html', results=str(e))
 
 #Main method
 if __name__ == '__main__':
