@@ -575,7 +575,8 @@ def greyImage():
         io.imsave('/home/ubuntu/Flask-Projects-App/result.jpg', grayscale)
 
         #Return the resulting file
-        return send_file('/home/ubuntu/Flask-Projects-App/result.jpg', results="<img src='result.jpg'></img>")#attachment_filename='result.jpg')
+        return render_template('rgb2grayscale.html', results="<img src='result.jpg'></img>")
+        #return send_file('/home/ubuntu/Flask-Projects-App/result.jpg', attachment_filename='result.jpg')
 
     #Return the exception and append the exception details to the HTML
     except Exception as e:
