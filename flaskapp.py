@@ -256,7 +256,7 @@ def getCOVIDData():
 
     #Catch error, return error message
     except Exception as e:
-        results.append("Error encountered. Please double check your ticker or try again later.<br>Exception details: " + str(e))
+        results.append("Error encountered. Please try again later.<br>Exception details: " + str(e))
         return render_template('covid_tracking.html', title="COVID-19 Tracking", results=results, counter=str(counter))
 
 #HTTP POST for mortgage rate check
@@ -317,7 +317,7 @@ def checkRates():
     
     #Catch errors and return error message
     except Exception as e:
-        results += "Error encountered. Please double check your ticker or try again later.<br>Exception details: " + str(e)
+        results += "Error encountered. Please double check your input or try again later.<br>Exception details: " + str(e)
         return render_template('mortgage.html', title="Mortgage Tool Kit", results=results)
 
 #HTTP POST for mortgage rate calculation
@@ -377,7 +377,7 @@ def calculateMortgage():
     
     #Catch errors and return error message
     except Exception as e:
-        results += "Error encountered. Please double check your ticker or try again later.<br>Exception details: " + str(e)
+        results += "Error encountered. Please double check your input or try again later.<br>Exception details: " + str(e)
         return render_template('mortgage.html', title="Mortgage Tool Kit", results2=results)   
      
 #HTTP POST for stock price check
@@ -541,7 +541,7 @@ def checkWeather():
 
     #Catch error and return error response
     except Exception as e:
-        results.append("Error encountered. Please double check your ticker or try again later.<br>Exception details: " + str(e))
+        results.append("Error encountered. Please double check your input or try again later.<br>Exception details: " + str(e))
         return render_template('weathercheck.html', title="Check the Weather", results=results)
 
 #Upload method
